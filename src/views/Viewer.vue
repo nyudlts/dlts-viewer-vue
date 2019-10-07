@@ -107,7 +107,7 @@
           <div class="field field-name-title" :dir="languageDir">
             <div class="field-items" :dir="languageDir">
               <div class="field-item even" :dir="languageDir">
-                <h2 :dir="languageDir">{{ entity_title }}</h2>
+                <h2 :dir="languageDir">{{ title }}</h2>
               </div>
             </div>
           </div>
@@ -366,9 +366,9 @@ import { Vue } from 'vue-property-decorator';
 export default Vue.extend({
   data() {
     return {
-      loadingMessage: 'Loading books...',
+      loadingMessage: 'Loading resource...',
       iiifEndpoint: 'http://localhost:3000',
-      entity_title: '',
+      title: '',
       show: false,
       identifier: '',
       type: '',
@@ -526,7 +526,7 @@ export default Vue.extend({
         })
         .then((data) => {
           this.languageDir = data.language.dir;
-          this.entity_title = data.entity_title;
+          this.title = data.title;
         })
         .finally(() => {
           this.isBusy = false;
@@ -543,8 +543,8 @@ export default Vue.extend({
         })
         .then((data) => {
           this.sequenceCount = parseInt(data.metadata.sequence_count.value[0], 10);
-          this.entity_title = data.entity_title;
-          document.title = this.entity_title;
+          this.title = data.title;
+          document.title = this.title;
           this.isMultivolume = data.isMultivolume;
           Object.keys(data.availableLanguages).map((language) => {
             this.availableLanguages.push(data.availableLanguages[language]);
@@ -611,7 +611,7 @@ export default Vue.extend({
       this.$root.$emit('tv::open::modal', {
         sequence: this.sequence,
         map: this.map,
-        entity_title: this.entity_title,
+        title: this.title,
         identifier: this.identifier,
         iiifEndpoint: this.viewerEndpoint,
         viewerEndpoint: this.iiifEndpoint,
