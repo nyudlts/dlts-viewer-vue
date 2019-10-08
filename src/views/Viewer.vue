@@ -1,69 +1,66 @@
 <template>
   <div id="page" class="page" v-bind:class="{ pagemetaHidden: !isMetadataInfoPaneVisible }">
     <div id="navbar" class="pane navbar" role="navigation">
-        <ul class="navbar navbar-left">
-          <li class="navbar-item">
-            <a 
-              id="buttonLibraryHome" 
-              @click.stop.prevent="goToLibraryHome" 
-              class="button home">
-              <span>{{$t('message.library')}}</span>
-            </a>
-          </li>
-          <li class="navbar-item">
-            <a
-              id="buttonMetadata"
-              @click.stop.prevent="toggleMetadataInfoPane"
-              class="button metadata"
-              v-bind:class="{ on: isMetadataInfoPaneVisible }"
-            >
-              <span>{{$t('message.metadata')}}</span>
-            </a>
-          </li>
-          <li class="navbar-item">
-            <a
-              id="buttonViewMode"
-              @click.stop.prevent="togglePageView"
-              :title="$t('message.toggleBetweenSingleOrDoublePage')"
-              class="paging toggle active page-double"
-              v-bind:class="{ 'page-double': !isSequenceMode, 'page-single': isSequenceMode }"
-            >
-              <span>{{$t('message.toggleBetweenSingleOrDoublePage')}}</span>
-            </a>
-          </li>
-          <li class="navbar-item">
-            <a
-              id="buttonBrowsePages"
-              :title="$t('message.selectPage')"
-              class="button thumbnails off"
-              @click.stop.prevent="toggleThumbnailsPane"
-            >
-              <span>{{$t('message.page')}}</span>
-            </a>
-          </li>
-          <li class="navbar-item">
-            <a
-              id="buttonRotate"
-              :title="$t('message.rotatePage')"
-              class="rotate"
-              @click.stop.prevent="rotateWorld"
-            >
-              <span>{{$t('message.rotatePage')}}</span>
-            </a>
-          </li>
-        </ul>
-        <ul class="navbar-fullscreen">
-          <li class="navbar-item">
-            <a
-              id="buttonToogleFullscreenMode"
-              @click.stop.prevent="toggleFullscreen"
-              class="button fullscreen"
-              v-bind:class="{ on: isFullScreen }"
-            >
-              <span>{{$t('message.toggleFullscreen')}}</span>
-            </a>
-          </li>
-        </ul>
+      <ul class="navbar navbar-left">
+        <li class="navbar-item">
+          <a id="buttonLibraryHome" @click.stop.prevent="goToLibraryHome" class="button home">
+            <span>{{ $t('message.library') }}</span>
+          </a>
+        </li>
+        <li class="navbar-item">
+          <a
+            id="buttonMetadata"
+            @click.stop.prevent="toggleMetadataInfoPane"
+            class="button metadata"
+            v-bind:class="{ on: isMetadataInfoPaneVisible }"
+          >
+            <span>{{ $t('message.metadata') }}</span>
+          </a>
+        </li>
+        <li class="navbar-item">
+          <a
+            id="buttonViewMode"
+            @click.stop.prevent="togglePageView"
+            :title="$t('message.toggleBetweenSingleOrDoublePage')"
+            class="paging toggle active page-double"
+            v-bind:class="{ 'page-double': !isSequenceMode, 'page-single': isSequenceMode }"
+          >
+            <span>{{ $t('message.toggleBetweenSingleOrDoublePage') }}</span>
+          </a>
+        </li>
+        <li class="navbar-item">
+          <a
+            id="buttonBrowsePages"
+            :title="$t('message.selectPage')"
+            class="button thumbnails off"
+            @click.stop.prevent="toggleThumbnailsPane"
+          >
+            <span>{{ $t('message.page') }}</span>
+          </a>
+        </li>
+        <li class="navbar-item">
+          <a
+            id="buttonRotate"
+            :title="$t('message.rotatePage')"
+            class="rotate"
+            @click.stop.prevent="rotateWorld"
+          >
+            <span>{{ $t('message.rotatePage') }}</span>
+          </a>
+        </li>
+      </ul>
+      <ul class="navbar-fullscreen">
+        <li class="navbar-item">
+          <a
+            id="buttonToogleFullscreenMode"
+            @click.stop.prevent="toggleFullscreen"
+            class="button fullscreen"
+            v-bind:class="{ on: isFullScreen }"
+          >
+            <span>{{ $t('message.toggleFullscreen') }}</span>
+          </a>
+        </li>
+      </ul>
     </div>
     <div role="main" id="main" class="pane main" :dir="languageDir">
       <div
@@ -234,23 +231,34 @@
       </div>
       <div role="presentation" aria-hidden="true" id="display" class="pane display">
         <div class="openseadragon" :id="viewer.options.id"></div>
+
         <a
           :title="$t('message.goToPreviousPage')"
-          id="buttonPreviousPage"
           @click.stop.prevent="openPreviousPage"
-          class="paging previous pager-left"
-          v-bind:class="{ active: sequence > 1, inactive: sequence <= 1 }"
+          id="buttonPreviousPage"
+          class="paging previous"
+          v-bind:class="{
+            active: sequence > 1,
+            inactive: sequence <= 1,
+            'pager-left': worldDirection === 'ltr' ? true : false,
+            'pager-right': worldDirection === 'rtl' ? true : false,
+          }"
         >
-          <span>{{$t('message.goToPreviousPage')}}</span>
+          <span>{{ $t('message.goToPreviousPage') }}</span>
         </a>
         <a
           :title="$t('message.goToNextPage')"
-          id="buttonNextPage"
           @click.stop.prevent="openNextPage"
-          class="paging next pager-right"
-          v-bind:class="{ active: sequence >= sequenceCount, inactive: sequence >= sequenceCount }"
+          id="buttonNextPage"
+          class="paging next"
+          v-bind:class="{
+            active: sequence >= sequenceCount,
+            inactive: sequence >= sequenceCount,
+            'pager-left': worldDirection === 'ltr' ? false : true,
+            'pager-right': worldDirection === 'rtl' ? false : true,
+          }"
         >
-          <span>{{$t('message.goToNextPage')}}</span>
+          <span>{{ $t('message.goToNextPage') }}</span>
         </a>
       </div>
     </div>
@@ -265,6 +273,7 @@
           :max="sequenceCount"
           type="range"
           aria-label="Page to jump to"
+          :dir="worldDirection"
         >
           <span role="navigation">
             <form>
@@ -360,6 +369,7 @@
 </template>
 
 <script lang="ts">
+// https://picturae.github.io/openseadragonselection/
 import * as OpenSeadragon from 'openseadragon';
 import { Vue } from 'vue-property-decorator';
 
@@ -373,6 +383,7 @@ export default Vue.extend({
       identifier: '',
       type: '',
       languageDir: 'ltr',
+      worldDirection: 'ltr',
       previousPage: 0,
       nextPage: 0,
       isBusy: true,
@@ -422,7 +433,7 @@ export default Vue.extend({
           value: [],
         },
       },
-      map: null,
+      map: {},
       viewer: {
         options: {
           id: 'image-viewer',
@@ -468,12 +479,12 @@ export default Vue.extend({
     },
   },
   methods: {
-    volumeChange(event): void {
+    volumeChange(event: Event): void {
       const { type, identifier } = this;
-      const target = event.currentTarget.value;
+      const element = <HTMLInputElement>event.target;
+      const target = element.value;
       if (identifier !== target) {
-        const sequence = '1';
-        const path = `/${type}/${target}/${sequence}`;
+        const path = `/${type}/${target}/1`;
         this.isBusy = true;
         this.$router.push({ path: path }, (): void => {
           this.$router.go(path);
@@ -482,7 +493,7 @@ export default Vue.extend({
       }
     },
     goToLibraryHome(): void {
-      const path = '/';
+      const path: string = '/';
       this.isBusy = true;
       this.$router.push({ path: path }, (): void => {
         this.$router.go(path);
@@ -545,6 +556,7 @@ export default Vue.extend({
           this.sequenceCount = parseInt(data.metadata.sequence_count.value[0], 10);
           this.title = data.title;
           document.title = this.title;
+          this.worldDirection = data.worldDirection;
           this.isMultivolume = data.isMultivolume;
           Object.keys(data.availableLanguages).map((language) => {
             this.availableLanguages.push(data.availableLanguages[language]);
@@ -552,6 +564,7 @@ export default Vue.extend({
           Object.keys(data.metadata).forEach((key: string): void => {
             this.metadata[key] = data.metadata[key];
           });
+
           this.metadata.volumes = data.volumes;
           this.initViewer();
         });
@@ -562,13 +575,14 @@ export default Vue.extend({
     isMaxZoom(): boolean {
       return this.map.viewport.getZoom() >= this.map.viewport.getMaxZoom();
     },
-    onSliderChange(): void {
+    onSliderChange(sequence: string): void {
+      this.sequence = parseInt(sequence, 10);
       this.changePage();
     },
     changePage(): void {
-      const { type, iiifEndpoint, sequence, identifier } = this;
+      const { type, sequence, iiifEndpoint, identifier } = this;
       this.isBusy = true;
-      this.$router.push({ path: `/books/${this.identifier}/${this.sequence}` }, (): void => {
+      this.$router.push({ path: `/books/${this.identifier}/${sequence}` }, (): void => {
         this.map.open([
           {
             tileSource: `${iiifEndpoint}/${type}/${identifier}/${sequence}/info.json`,
@@ -594,13 +608,13 @@ export default Vue.extend({
     },
     openPreviousPage(): void {
       if (this.sequence > 1) {
-        this.sequence = parseInt(this.sequence, 10) - 1;
+        this.sequence = this.sequence - 1;
         this.changePage();
       }
     },
     openNextPage(): void {
       if (this.sequence < this.sequenceCount) {
-        this.sequence = parseInt(this.sequence, 10) + 1;
+        this.sequence = this.sequence + 1;
         this.changePage();
       }
     },
@@ -618,10 +632,9 @@ export default Vue.extend({
       });
     },
     areAllFullyLoaded(): boolean {
-      let tiledImage;
       const count = this.map.world.getItemCount();
       for (let i = 0; i < count; i += 1) {
-        tiledImage = this.map.world.getItemAt(i);
+        const tiledImage = this.map.world.getItemAt(i);
         if (!tiledImage.getFullyLoaded()) {
           return false;
         }

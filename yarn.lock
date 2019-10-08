@@ -785,6 +785,12 @@
   resolved "https://registry.yarnpkg.com/@types/normalize-package-data/-/normalize-package-data-2.4.0.tgz#e486d0d97396d79beedd0a6e33f4534ff6b4973e"
   integrity sha512-f5j5b/Gf71L+dbqxIpQ4Z2WlmI/mPJ0fOkGGmFgtb6sAu97EPczzbS3/tJKxmcYDj55OX6ssqwDAWOHIYDRDGA==
 
+"@types/openseadragon@alvaromartmart/types-openseadragon":
+  version "0.0.9"
+  resolved "https://codeload.github.com/alvaromartmart/types-openseadragon/tar.gz/68564e89d5666cb3b0fc12fdb2e747d84d27eb90"
+  dependencies:
+    openseadragon "^2.4.0"
+
 "@types/q@^1.5.1":
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/@types/q/-/q-1.5.2.tgz#690a1475b84f2a884fd07cd797c00f5f31356ea8"
@@ -7839,7 +7845,7 @@ opener@^1.5.1:
   resolved "https://registry.yarnpkg.com/opener/-/opener-1.5.1.tgz#6d2f0e77f1a0af0032aca716c2c1fbb8e7e8abed"
   integrity sha512-goYSy5c2UXE4Ra1xixabeVh1guIX/ZV/YokJksb6q2lubWu6UbvPQ20p542/sFIll1nl8JnCyK9oBaOcCWXwvA==
 
-openseadragon@^2.4.1:
+openseadragon@^2.4.0, openseadragon@^2.4.1:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/openseadragon/-/openseadragon-2.4.1.tgz#91fda5245558f5e4f939c2173bdf582359154b21"
   integrity sha512-7fWUnCkGvWcnoRxqeXcg4bSLPApWbI0hHumEZF8K2pziMfPNjvvHL5XB4oQeT2XfrGKfaasVrPe2XqhAr5kogA==

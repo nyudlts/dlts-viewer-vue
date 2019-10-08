@@ -27,30 +27,26 @@
 </template>
 
 <script lang="ts">
-
 import { Component, Vue } from 'vue-property-decorator';
 
 interface Book {
-  entity_title: ​string;
+  entity_title: string;
   identifier: string;
   image: string;
-  source:string;
-};
+  source: string;
+}
 
 interface Field {
-  key: ​string;
+  key: string;
   label: string;
-};
+}
 
-const {
-  log
-} = console;
+const { log } = console;
 
 @Component({
   components: {},
 })
 export default class Home extends Vue {
-
   title: string = 'List of books';
 
   loadingMessage: string = 'Loading books...';
