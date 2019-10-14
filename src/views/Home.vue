@@ -10,8 +10,8 @@
             <strong>{{ loadingMessage }}</strong>
           </div>
         </template>
-        <template v-slot:cell(entity_title)="data">
-          <a :href="data.item.source">{{ data.item.entity_title }}</a>
+        <template v-slot:cell(title)="data">
+          <a :href="data.item.source">{{ data.item.title }}</a>
         </template>
       </b-table>
       <b-pagination
@@ -67,7 +67,7 @@ export default class Home extends Vue {
 
   fields: Array<Field> = [
     {
-      key: 'entity_title',
+      key: 'title',
       label: 'Title',
     },
     {
@@ -88,7 +88,7 @@ export default class Home extends Vue {
     this.isBusy = true;
     this.start = this.currentPage * this.limit;
     this.items = [];
-    fetch(`${this.iiifEndpoint}/listBooks?start=${this.start}&limit=${this.limit}`)
+    fetch(`${this.iiifEndpoint}/books?start=${this.start}&limit=${this.limit}`)
       .then((response) => {
         if (response.ok) {
           return response.json();
