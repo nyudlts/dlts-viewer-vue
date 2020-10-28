@@ -1,8 +1,35 @@
 <template>
   <div class="main container">
     <div class="overflow-auto">
-      <h4>{{ title }}</h4>
       <br />
+      <h4>{{ title }}</h4>
+      <hr />
+      <b-form-group label-cols-sm="0" label-align-sm="left" label-for="filterInput" class="mb-0">
+        <h5>Search</h5>
+        <b-input-group size="sm">
+          <b-form-input
+            v-model="filter"
+            type="search"
+            id="filterInput"
+            placeholder="Type to search by object identifier"
+          >
+          </b-form-input>
+          <b-input-group-append>
+            <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
+          </b-input-group-append>
+        </b-input-group>
+      </b-form-group>
+      <b-form-group
+        label-cols-sm="0"
+        label-align-sm="left"
+        label-size="sm"
+        class="mb-0"
+      >
+        <br>
+        <h6>Filter by collection</h6>
+        <b-form-select v-model="selectedCollection" :options="collections" @change="onCollectionChange($event)"></b-form-select>
+      </b-form-group>
+      <br>
       <b-table striped hover :busy.sync="isBusy" :items="items" :fields="fields" caption-top>
         <template v-slot:table-busy>
           <div class="text-center my-2">
@@ -11,7 +38,7 @@
           </div>
         </template>
         <template v-slot:cell(title)="data">
-          <a :href="data.item.source">{{ data.item.title }}</a>
+          <router-link :to="data.item.source">{{ data.item.title }}</router-link>
         </template>
       </b-table>
       <b-pagination
@@ -26,89 +53,151 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+<script>
+// https://github.com/LinusBorg/portal-vue
+import { Component, Watch, Vue } from 'vue-property-decorator'
 
-interface Book {
-  entity_title: string;
-  identifier: string;
-  image: string;
-  source: string;
-}
+const { log } = console
 
-interface Field {
-  key: string;
-  label: string;
-}
-
-const { log } = console;
-
-@Component({
-  components: {},
+export default @Component({
+  components: {}
 })
-export default class Home extends Vue {
-  title: string = 'List of books';
+class Home extends Vue {
+  title = 'List of books'
 
-  loadingMessage: string = 'Loading books...';
+  loadingMessage = 'Loading books...'
 
-  currentPage: number = 1;
+  currentPage = 1
 
-  rows: number = 0;
+  selectedCollection = 'null'
 
-  start: number = 0;
+  rows = 0
 
-  limit: number = 25;
+  start = 0
 
-  isBusy: boolean = true;
+  limit = 10
 
-  items: Array<any> = [];
+  lang = 'en'
 
-  iiifEndpoint: string = 'http://localhost:3000';
+  isBusy = true
 
-  fields: Array<Field> = [
+  items = []
+
+  filter = ''
+
+  filterOn = []
+
+  sortDirection = 'asc'
+
+  sortBy = 'collection'
+
+  iiifEndpoint = `${process.env.VUE_APP_VIEWERENDPOINT}/books`
+
+  collectionsUrl = `${process.env.VUE_APP_VIEWERENDPOINT}/collections`
+
+  collections = [
+    {
+      text: '-- All collections --',
+      value: 'null'
+    }
+  ]
+
+  partner = ''
+
+  timeoutID = 0
+
+  collection = ''
+
+  fields = [
     {
       key: 'title',
-      label: 'Title',
+      label: 'Title'
     },
     {
-      key: 'identifier',
       label: 'Identifier',
-    },
-    {
-      key: 'source',
-      label: 'Path',
-    },
-  ];
+      key: 'identifier'
+    }
+  ]
 
-  private mounted(): void {
-    this.fetchBooks();
+  @Watch('filter')
+  onPropertyChanged (newVal, oldValue) {
+    clearTimeout(this.timeoutID)
+    const vm = this
+    this.timeoutID = setTimeout(() => {
+      vm.fetchBooks()
+    }, 500)
   }
 
-  private fetchBooks(): void {
-    this.isBusy = true;
-    this.start = this.currentPage * this.limit;
-    this.items = [];
-    fetch(`${this.iiifEndpoint}/books?start=${this.start}&limit=${this.limit}`)
+  mounted () {
+    this.fetchBooks()
+    this.fetchCollections()
+  }
+
+  onCollectionChange (newValue) {
+    let params = []
+    this.selectedCollection = newValue
+    if (newValue !== 'null') {
+      params = newValue.split(':')
+      this.collection = params[0]
+      if (params[1]) {
+        this.partner = params[1]
+      }
+    }
+    this.fetchBooks()
+  }
+
+  fetchCollections () {
+    fetch(this.collectionsUrl)
       .then((response) => {
         if (response.ok) {
-          return response.json();
+          return response.json()
         }
-        throw new Error('Network response was not ok.');
+        throw new Error('Network response was not ok.')
       })
       .then((data) => {
-        this.rows = parseInt(data.length, 10);
-        data.documents.map((book: Book) => {
-          const { identifier } = book;
-          book.source = `/books/${identifier}/1`;
-          return this.items.push(book);
-        });
-      })
-      .finally(() => {
-        this.isBusy = false;
+        const vm = this
+        data.response.docs.map((doc) => {
+          vm.collections.push({
+            value: `${doc.code}:${doc.partners[0].code}`,
+            text: `${doc.title} - ${doc.partners[0].name}`
+          })
+        })
       })
       .catch((error) => {
-        log(`Error! Could not reach the API. ${error}`);
-      });
+        log(`Error! Could not reach the API. ${error}`)
+      })
+  }
+
+  fetchBooks () {
+    this.isBusy = true
+    this.start = this.start * this.limit
+    this.items = []
+    fetch(`${this.iiifEndpoint}?filter=${this.filter}&start=${this.start}&rows=${this.limit}&lang=${this.lang}&collection=${this.collection}&partner=${this.partner}`)
+      .then((response) => {
+        if (response.ok) {
+          return response.json()
+        }
+        throw new Error('Network response was not ok.')
+      })
+      .then(data => {
+        const vm = this
+        this.rows = parseInt(data.response.numFound, 10)
+        data.response.docs.map((doc) => {
+          vm.items.push(
+            {
+              title: doc.title,
+              identifier: doc.identifier,
+              source: `/books/${doc.identifier}/1`
+            }
+          )
+        })
+      })
+      .finally(() => {
+        this.isBusy = false
+      })
+      .catch((error) => {
+        log(`Error! Could not reach the API. ${error}`)
+      })
   }
 }
 </script>

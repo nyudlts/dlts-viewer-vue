@@ -1,53 +1,51 @@
 {
-  "name": "dlts-viewer-vue",
+  "name": "viewer",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
+    "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
-    "test:unit": "vue-cli-service test:unit"
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@types/openseadragon": "alvaromartmart/types-openseadragon",
-    "axios": "^0.19.0",
-    "bootstrap-vue": "^2.0.2",
-    "core-js": "^2.6.5",
-    "node-sass": "^4.12.0",
-    "openseadragon": "^2.4.1",
-    "register-service-worker": "^1.6.2",
-    "vue": "^2.6.10",
-    "vue-class-component": "^7.0.2",
-    "vue-i18n": "^8.14.1",
-    "vue-property-decorator": "^8.1.0",
-    "vue-router": "^3.0.3",
-    "webpack": "^4.41.0",
-    "whatwg-fetch": "^3.0.0"
+    "bootstrap": "^4.5.3",
+    "bootstrap-vue": "^2.18.1",
+    "core-js": "^3.6.5",
+    "openseadragon": "^2.4.2",
+    "register-service-worker": "^1.7.1",
+    "vue": "^2.6.11",
+    "vue-class-component": "^7.2.6",
+    "vue-i18n": "^8.22.1",
+    "vue-property-decorator": "^9.0.2",
+    "vue-router": "^3.2.0",
+    "vuex": "^3.4.0"
   },
   "devDependencies": {
-    "@types/jest": "^23.1.4",
-    "@vue/cli-plugin-babel": "^3.11.0",
-    "@vue/cli-plugin-e2e-nightwatch": "^3.11.0",
-    "@vue/cli-plugin-eslint": "^3.11.0",
-    "@vue/cli-plugin-pwa": "^3.11.0",
-    "@vue/cli-plugin-typescript": "^3.11.0",
-    "@vue/cli-plugin-unit-jest": "^3.11.0",
-    "@vue/cli-service": "^3.11.0",
-    "@vue/eslint-config-prettier": "^5.0.0",
-    "@vue/eslint-config-typescript": "^4.0.0",
-    "@vue/test-utils": "1.0.0-beta.29",
-    "babel-core": "7.0.0-bridge.0",
-    "babel-eslint": "^10.0.1",
-    "eslint": "^5.16.0",
-    "eslint-plugin-prettier": "^3.1.0",
-    "eslint-plugin-vue": "^5.0.0",
-    "prettier": "^1.18.2",
-    "sass": "^1.18.0",
-    "sass-loader": "^8.0.0",
-    "ts-jest": "^23.0.0",
-    "typescript": "^3.4.3",
-    "vue-template-compiler": "^2.6.10"
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-e2e-nightwatch": "~4.5.0",
+    "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-pwa": "~4.5.0",
+    "@vue/cli-plugin-router": "~4.5.0",
+    "@vue/cli-plugin-unit-mocha": "~4.5.0",
+    "@vue/cli-plugin-vuex": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "@vue/eslint-config-standard": "^5.1.2",
+    "@vue/test-utils": "^1.0.3",
+    "babel-eslint": "^10.1.0",
+    "chai": "^4.1.2",
+    "chromedriver": "86",
+    "eslint": "^6.7.2",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "eslint-plugin-vue": "^6.2.2",
+    "geckodriver": "^1.20.0",
+    "sass": "^1.26.5",
+    "sass-loader": "^8.0.2",
+    "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {
     "root": true,
@@ -56,68 +54,27 @@
     },
     "extends": [
       "plugin:vue/essential",
-      "@vue/prettier",
-      "@vue/typescript"
+      "@vue/standard"
     ],
-    "rules": {},
     "parserOptions": {
-      "parser": "@typescript-eslint/parser"
+      "parser": "babel-eslint"
     },
+    "rules": {},
     "overrides": [
       {
         "files": [
-          "**/__tests__/*.{j,t}s?(x)"
+          "**/__tests__/*.{j,t}s?(x)",
+          "**/tests/unit/**/*.spec.{j,t}s?(x)"
         ],
         "env": {
-          "jest": true
+          "mocha": true
         }
       }
     ]
   },
-  "postcss": {
-    "plugins": {
-      "autoprefixer": {}
-    }
-  },
   "browserslist": [
     "> 1%",
-    "last 2 versions"
-  ],
-  "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "jsx",
-      "json",
-      "vue",
-      "ts",
-      "tsx"
-    ],
-    "transform": {
-      "^.+\\.vue$": "vue-jest",
-      ".+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$": "jest-transform-stub",
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "transformIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "moduleNameMapper": {
-      "^@/(.*)$": "<rootDir>/src/$1"
-    },
-    "snapshotSerializers": [
-      "jest-serializer-vue"
-    ],
-    "testMatch": [
-      "**/tests/unit/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)"
-    ],
-    "testURL": "http://localhost/",
-    "watchPlugins": [
-      "jest-watch-typeahead/filename",
-      "jest-watch-typeahead/testname"
-    ],
-    "globals": {
-      "ts-jest": {
-        "babelConfig": true
-      }
-    }
-  }
+    "last 2 versions",
+    "not dead"
+  ]
 }

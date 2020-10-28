@@ -868,26 +868,13 @@ html .page {
   margin-bottom: 5px;
 }
 
-.pagemeta .container .field-name-title {
-  font-weight: bold;
-  font-size: 1.3em;
-  margin: 0.7rem 0 0.5rem;
-  line-height: 1.3;
-}
-
-.pagemeta .container .field-name-field-subtitle {
-  border-bottom: 1px solid #ccc;
-  font-weight: bold;
-  font-size: 1.1em;
-  margin: 0.5em 0;
-  padding: 0 0 0.5em 0;
-}
-
-.pagemeta .container .field-name-field-rights {
-  margin-top: 0.5em;
-  border-top: 1px solid #ccc;
-  padding-top: 0.5em;
-  font-size: 0.8em;
+.pagemeta .field-rights {
+  .field-item {
+    margin-top: 0.5em;
+    border-top: 1px solid #ccc;
+    padding-top: 0.5em;
+    font-size: 0.8em;  
+  }
 }
 
 .pagemeta .container .field .field-label {
@@ -977,7 +964,7 @@ html .page {
   display: block;
 }
 
-.pagemeta .container .field-type-link-field {
+.pagemeta .field-handle {
   margin-top: 0.5em;
   border-top: 1px solid #ccc;
   padding-top: 0.5em;
@@ -987,24 +974,24 @@ html .page {
   margin-bottom: 0.5rem;
 }
 
-.main[dir='rtl'] .pagemeta {
+[dir='rtl'] .main .pagemeta {
   float: right;
   border-right: none;
   border-left: 1px solid #ccc;
   direction: rtl;
 }
 
-.main[dir='rtl'] .pagemeta .field-name-field-rights .field-item {
+[dir='rtl'] .main .pagemeta .field-name-field-rights .field-item {
   direction: ltr;
   text-align: right;
 }
 
-.main[dir='rtl'] .field-label-inline .field-label,
-.main[dir='rtl'] .field-label-inline .field-items {
+[dir='rtl'] .main .field-label-inline .field-label,
+[dir='rtl'] .main .field-label-inline .field-items {
   float: none;
 }
 
-.main[dir='ltr'] .pagemeta {
+[dir='ltr'] .main .pagemeta {
   float: left;
   border-left: none;
   border-right: 1px solid #ccc;
@@ -1116,11 +1103,11 @@ body .display a span {
   visibility: hidden;
 }
 
-body .pane.main[dir='rtl'] .pane.display .paging.pager-right {
+[dir='rtl'] body .pane.main .pane.display .paging.pager-right {
   right: 260px;
 }
 
-body .pane.main[dir='rtl'] .pane.display .paging.pager-left {
+[dir='rtl'] body .pane.main .pane.display .paging.pager-left {
   left: -20px;
 }
 
@@ -1214,33 +1201,33 @@ body .pane.main[dir='rtl'] .pane.display .paging.pager-left {
   margin: 0;
 }
 
-#pager[dir='rtl'] ~ .thumbnails .thumbnails-container .pager-first,
-#pager[dir='rtl'] ~ .thumbnails .thumbnails-container .pager-previous {
+[dir='rtl'] #pager ~ .thumbnails .thumbnails-container .pager-first,
+[dir='rtl'] #pager ~ .thumbnails .thumbnails-container .pager-previous {
   float: right;
 }
 
-#pager[dir='rtl'] ~ .thumbnails .thumbnails-container .pager-last,
-#pager[dir='rtl'] ~ .thumbnails .thumbnails-container .pager-next {
+[dir='rtl'] #pager ~ .thumbnails .thumbnails-container .pager-last,
+[dir='rtl'] #pager ~ .thumbnails .thumbnails-container .pager-next {
   float: right;
 }
 
-#pager[dir='rtl'] ~ .thumbnails .thumbnails-container .pager-next a:before {
+[dir='rtl'] #pager ~ .thumbnails .thumbnails-container .pager-next a:before {
   content: '\e013' !important;
 }
 
-#pager[dir='rtl'] ~ .thumbnails .thumbnails-container .pager-previous a:before {
+[dir='rtl'] #pager ~ .thumbnails .thumbnails-container .pager-previous a:before {
   content: '\e012' !important;
 }
 
-#pager[dir='rtl'] ~ .thumbnails .thumbnails-container .pager-last a:before {
+[dir='rtl'] #pager ~ .thumbnails .thumbnails-container .pager-last a:before {
   content: '\e010';
 }
 
-#pager[dir='rtl'] ~ .thumbnails .thumbnails-container .pager-first a:before {
+[dir='rtl'] #pager ~ .thumbnails .thumbnails-container .pager-first a:before {
   content: '\e011';
 }
 
-#pager[dir='rtl'] ~ .thumbnails .view-book-thumbnails {
+[dir='rtl'] #pager ~ .thumbnails .view-book-thumbnails {
   direction: rtl;
 }
 
@@ -1322,4 +1309,38 @@ body .pane.main[dir='rtl'] .pane.display .paging.pager-left {
   border-radius: 5px;
   background-color: rgba(0, 0, 0, 0.5);
   box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+}
+
+.lang-options {
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 1em;
+  margin-bottom: .5em;
+}
+
+.volume-options  {
+  line-height: 1.4;
+  margin-bottom: 5px;
+  .multivolume {
+    border: 1px solid #ccc;
+    margin-top: .5em;
+    max-width: 95%;
+  }  
+}
+
+.group-title {
+  margin-bottom: 20px;
+  padding: 0 0 .5em 0;
+  border-bottom: 1px solid #ccc;
+
+  .field-title {
+    font-weight: bold;
+    font-size: 1.3em;
+    margin: 0.7rem 0 0.4rem;
+    line-height: 1.3;
+  }
+  .field-subtitle {
+    font-size: 1.1em;
+    margin: 0;
+    padding: 0;
+  }
 }
