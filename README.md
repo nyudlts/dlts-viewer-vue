@@ -1,4 +1,4 @@
-# dodo
+# DLTS Viewer
 
 ## Project setup
 ```
